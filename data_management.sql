@@ -11,7 +11,7 @@
  Target Server Version : 50720
  File Encoding         : 65001
 
- Date: 02/05/2019 22:05:09
+ Date: 05/05/2019 19:04:25
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,8 @@ DROP TABLE IF EXISTS `borrow`;
 CREATE TABLE `borrow`  (
   `borrow_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '借阅表',
   `borrow_time` date NULL DEFAULT NULL COMMENT '借阅时间',
-  `return_time` date NULL DEFAULT NULL COMMENT '归还时间',
+  `return_time` date NULL DEFAULT NULL COMMENT '应归还时间',
+  `reality_return` date NULL DEFAULT NULL COMMENT '实际归还实际',
   `reality_days` int(255) NULL DEFAULT NULL COMMENT '实际借阅天数',
   `is_overdue` tinyint(1) NULL DEFAULT 0 COMMENT '是否逾期',
   `overdue_days` int(255) NULL DEFAULT 0 COMMENT '逾期天数',
@@ -40,22 +41,26 @@ CREATE TABLE `borrow`  (
   INDEX `borrow_id_2`(`borrow_id`, `user_id`, `journal_id`) USING BTREE,
   CONSTRAINT `borrow_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `borrow_ibfk_2` FOREIGN KEY (`journal_id`) REFERENCES `journal_details` (`journal_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of borrow
 -- ----------------------------
-INSERT INTO `borrow` VALUES (1, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 96);
-INSERT INTO `borrow` VALUES (2, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 95);
-INSERT INTO `borrow` VALUES (3, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 89);
-INSERT INTO `borrow` VALUES (4, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 93);
-INSERT INTO `borrow` VALUES (5, '2019-04-30', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 93);
-INSERT INTO `borrow` VALUES (6, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 86);
-INSERT INTO `borrow` VALUES (7, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 96);
-INSERT INTO `borrow` VALUES (8, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 86);
-INSERT INTO `borrow` VALUES (9, '2019-04-28', '2019-05-01', NULL, 0, 0, 0.00, 0, 0, 1, 86);
-INSERT INTO `borrow` VALUES (10, '2019-05-02', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 87);
-INSERT INTO `borrow` VALUES (11, '2019-05-01', '2019-07-02', NULL, 0, 0, 0.00, 0, 0, 1, 80);
+INSERT INTO `borrow` VALUES (1, '2019-05-02', '2019-04-09', '2019-05-03', 1, 1, 24, 12.00, 1, 0, 1, 96);
+INSERT INTO `borrow` VALUES (2, '2019-05-02', '2019-07-02', NULL, NULL, 0, 0, 0.00, 0, 0, 1, 95);
+INSERT INTO `borrow` VALUES (3, '2019-05-02', '2019-07-02', NULL, NULL, 0, 0, 0.00, 0, 1, 1, 89);
+INSERT INTO `borrow` VALUES (4, '2019-05-02', '2019-07-02', '2019-05-03', 1, 0, 0, 0.00, 0, 0, 1, 93);
+INSERT INTO `borrow` VALUES (5, '2019-04-30', '2019-07-02', NULL, NULL, 0, 0, 0.00, 0, 1, 1, 93);
+INSERT INTO `borrow` VALUES (6, '2019-05-02', '2019-07-02', NULL, NULL, 0, 0, 0.00, 0, 1, 1, 86);
+INSERT INTO `borrow` VALUES (8, '2019-05-02', '2019-07-02', NULL, NULL, 0, 0, 0.00, 0, 1, 1, 86);
+INSERT INTO `borrow` VALUES (9, '2019-04-28', '2019-05-01', NULL, NULL, 0, 0, 0.00, 0, 0, 1, 86);
+INSERT INTO `borrow` VALUES (11, '2019-05-01', '2019-07-02', NULL, NULL, 0, 0, 0.00, 0, 0, 1, 80);
+INSERT INTO `borrow` VALUES (12, '2019-05-03', '2019-07-03', NULL, NULL, 0, 0, 0.00, 0, 1, 73, 77);
+INSERT INTO `borrow` VALUES (13, '2019-05-03', '2019-07-03', '2019-05-03', 0, 0, 0, 0.00, 0, 0, 65, 77);
+INSERT INTO `borrow` VALUES (14, '2019-05-04', '2019-07-04', NULL, NULL, 0, 0, 0.00, 0, 0, 1, 1);
+INSERT INTO `borrow` VALUES (15, '2019-04-16', '2019-05-01', '2019-05-04', NULL, 1, 0, 20.00, 1, 0, 15, 76);
+INSERT INTO `borrow` VALUES (16, '2019-05-04', '2019-07-04', NULL, NULL, 0, 0, 0.00, 0, 0, 1, 10);
+INSERT INTO `borrow` VALUES (17, '2019-05-05', '2019-07-05', NULL, NULL, 0, 0, 0.00, 0, 0, 68, 1);
 
 -- ----------------------------
 -- Table structure for fair_information
@@ -128,7 +133,12 @@ CREATE TABLE `fair_user`  (
   `fair_information_id` int(11) NULL DEFAULT NULL COMMENT '书展外键',
   `user_id` int(11) NULL DEFAULT NULL COMMENT '参加用户外键',
   PRIMARY KEY (`fair_user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of fair_user
+-- ----------------------------
+INSERT INTO `fair_user` VALUES (1, 17, 1);
 
 -- ----------------------------
 -- Table structure for journal_details
@@ -158,6 +168,7 @@ CREATE TABLE `journal_details`  (
   `domestic_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '国内代号(x-xxx)',
   `format` int(255) NULL DEFAULT NULL COMMENT '开本',
   `page_number` int(255) NULL DEFAULT NULL COMMENT '页数',
+  `inventory` int(255) NULL DEFAULT NULL COMMENT '库存',
   `is_borrow` tinyint(1) NULL DEFAULT 1 COMMENT '是否可借阅',
   `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '价格',
   `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '描述简介',
@@ -172,24 +183,24 @@ CREATE TABLE `journal_details`  (
 -- ----------------------------
 -- Records of journal_details
 -- ----------------------------
-INSERT INTO `journal_details` VALUES (1, '青年文摘', '5c3d4b76_ea6f.jpg', NULL, NULL, '2019-03-12 11:29:25', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 12.00, '阿斯达四大', 0, 1, NULL);
-INSERT INTO `journal_details` VALUES (10, '地方11111', '5c3d4b76_ea6f.jpg', '6', 1, '2019-04-18 11:01:24', '2019-04-17', 6, '6', 6, '6', '6', '6', 6, '6', '6', 0, 6, 1, '6', '6', 66, 6, 1, 6.00, '', 0, 3, '[3]');
-INSERT INTO `journal_details` VALUES (15, '提供的发给', '5c3d4b76_ea6f.jpg', '', 1, '2019-04-18 12:55:40', NULL, NULL, '', NULL, '', '', '', NULL, '', '', 0, 6, 1, '', '', NULL, NULL, 1, NULL, '', 0, 1002, '[1,1002]');
-INSERT INTO `journal_details` VALUES (76, '撒旦法', '5c3d4b76_ea6f.jpg', '765', 2, '2019-04-18 17:01:43', '2019-04-11', 567, '56', 56, '56', '56', '67', 67, '677', '67', 0, 7, 1, '67', '76', 67, 67, 1, 8.00, '发给他元话费更好地发给或多方', 0, 3003, '[3,3003]');
-INSERT INTO `journal_details` VALUES (77, '电饭锅电饭锅的', '5c3d4b76_ea6f.jpg', '风格和南方', 2, '2019-04-18 17:06:40', '2019-04-18', 6578, '678', 678, '678', '678', '678', 678, '678', '678', 1, 6, 3, '678', '678', 678678, 678, 1, 8678.00, '跟团游鸡肤鹤发', 0, 3003, '[3,3003]');
-INSERT INTO `journal_details` VALUES (78, '研讨会发给回复', '5c3d4b76_ea6f.jpg', '规范化就发个号', 3, '2019-04-18 17:09:17', '2019-04-02', 678, '678', 678, '678', '678', '678', 678, '678', '678', 0, 23, 1, '678', '678', 678, 678, 1, 678.00, '库遇见过', 0, 4003, '[4,4003]');
-INSERT INTO `journal_details` VALUES (79, '风格和风格', '5c3d4b76_ea6f.jpg', '任天野', 2, '2019-04-18 17:13:41', '2019-04-10', 789, '53', 35, '35', '35', '3535', 35, '35', '35', 0, 4, 1, '35', '35', 35, 35, 1, 35.00, '风格和风格和', 0, 1002, '[1,1002]');
-INSERT INTO `journal_details` VALUES (80, '电饭锅电饭锅', '5c3d4b76_ea6f.jpg', '567与', 1, '2019-04-18 17:15:39', '2019-04-17', 8, '8', NULL, '', '', '', NULL, '', '', 0, 24, 1, '', '', NULL, NULL, 1, NULL, '高合金钢', 0, 3, '[3]');
-INSERT INTO `journal_details` VALUES (81, '鼎折覆餗', '5c3d4b76_ea6f.jpg', '规划局', 2, '2019-04-18 17:17:31', '2019-04-03', 7, '', NULL, '', '', '', NULL, '', '', 0, 5, 1, '', '', NULL, NULL, 1, NULL, '', 0, 5002, '[5,5002]');
-INSERT INTO `journal_details` VALUES (82, '环节', '5c3d4b76_ea6f.jpg', '环节', 2, '2019-04-18 17:31:06', '2019-04-11', 6, '6', 6, '6', '6', '6', 6, '', '6', 1, 7, 1, '6', '6', 6, 6, 1, 6.00, '', 0, 3003, '[3,3003]');
-INSERT INTO `journal_details` VALUES (86, '333333', '5c3d4b76_ea6f.jpg', '1', 2, '2019-04-19 14:25:31', '2019-04-17', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 4, '内蒙古出版社', '1', 0, 3, 1, 'm111', '1-111', 4, 1, 0, 1.00, '678铁观音金太阳', 0, 3002, '[3,3002]');
-INSERT INTO `journal_details` VALUES (87, '特', '5c3d4b76_ea6f.jpg', '阿萨德', 2, '2019-04-20 15:42:39', '2019-04-18', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 3, '1', '1', 0, 2, 1, 'm1234', '1-111', 4, 1, 1, 1.00, 'asdasd', 0, 1002, '[1,1002]');
-INSERT INTO `journal_details` VALUES (88, '1', '5c3d4b76_ea6f.jpg', '1', 1, '2019-04-20 15:46:34', '2019-04-10', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 2, '1', '1', 0, 2, 1, 'M111', '1-111', 4, 1, 1, 1.00, 'ADSASD', 1, 3003, '[3,3003]');
-INSERT INTO `journal_details` VALUES (89, '11111', '5c3d4b76_ea6f.jpg', '1111', 1, '2019-04-20 15:52:24', '2019-04-10', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 4, '1', '1', 0, 1, 1, 'm1234', '1-111', 4, 1, 1, 1.00, 'asdadads', 0, 3003, '[3,3003]');
-INSERT INTO `journal_details` VALUES (93, '123123123', '5c3d4b76_ea6f.jpg', '1111', 1, '2019-04-20 16:18:28', '2019-04-18', 1, '2019-1', 1, 'cn11-1111/A', '9780596520687', '1111-1111', 3, '1', '1', 0, 5, 1, 'm123', '1-111', 4, 1, 1, 1.00, 'sdfsadf', 0, 3, '[3]');
-INSERT INTO `journal_details` VALUES (94, '1', '5c3d4b76_ea6f.jpg', '1', 1, '2019-04-20 17:04:58', '2019-04-18', 1, '2019-2', 1, 'cn11-1111/A', '9780596520687', '1111-2222', 5, '1', '1', 0, 6, 1, 'm122', '1-222', 4, 1, 1, 1.00, '<p><strong>sdasdfasdsdfsdfsdfsdfsdfsdfsdfsdfsdfd</strong><span style=\"text-decoration: underline; color: #ff6600;\"><em>撒旦法撒大声地</em></span></p>', 0, 4, '[4]');
-INSERT INTO `journal_details` VALUES (95, '撒旦法', '5c3d4b76_ea6f.jpg', '阿达', 2, '2019-04-28 14:47:38', '2019-04-25', 12, '2019-2', 12, 'cn11-1111/A', '9780596520687', '1111-2222', 7, '1', '1', 0, 4, 1, 'm123', '1-211', 4, 12, 1, 1.00, '<p>sdfsdfwerfwqerqw&nbsp;</p>', 0, 3003, '[3,3003]');
-INSERT INTO `journal_details` VALUES (96, '撒地方斯蒂芬', '5c3d4b76_ea6f.jpg', 'asdasd', 2, '2019-04-28 17:28:18', '2019-04-18', 12, '2018-3', 12, 'cn11-1111/A', '9780596520687', '2345-3456', 7, 'wsd', 'sdf', 0, 5, 1, 'm123', '1-555', 4, 12, 1, 2.00, '<p>45tgedrfgsdfsc</p>', 0, 3002, '[3,3002]');
+INSERT INTO `journal_details` VALUES (1, '青年文摘', '5c3d4b76_ea6f.jpg', NULL, NULL, '2019-03-12 11:29:25', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 21, 1, 12.00, '阿斯达四大', 0, 1, NULL);
+INSERT INTO `journal_details` VALUES (10, '地方11111', '5c3d4b76_ea6f.jpg', '6', 1, '2019-04-18 11:01:24', '2019-04-17', 6, '6', 6, '6', '6', '6', 6, '6', '6', 0, 6, 1, '6', '6', 66, 6, 3, 1, 6.00, '', 0, 3, '[3]');
+INSERT INTO `journal_details` VALUES (15, '提供的发给', '5c3d4b76_ea6f.jpg', '', 1, '2019-04-18 12:55:40', NULL, NULL, '', NULL, '', '', '', NULL, '', '', 0, 6, 1, '', '', NULL, NULL, 6, 1, NULL, '', 0, 1002, '[1,1002]');
+INSERT INTO `journal_details` VALUES (76, '撒旦法', '5c3d4b76_ea6f.jpg', '765', 2, '2019-04-18 17:01:43', '2019-04-11', 567, '56', 56, '56', '56', '67', 67, '677', '67', 0, 7, 1, '67', '76', 67, 67, 4, 1, 8.00, '发给他元话费更好地发给或多方', 0, 3003, '[3,3003]');
+INSERT INTO `journal_details` VALUES (77, '电饭锅电饭锅的', '5c3d4b76_ea6f.jpg', '风格和南方', 2, '2019-04-18 17:06:40', '2019-04-18', 6578, '678', 678, '678', '678', '678', 678, '678', '678', 1, 6, 3, '678', '678', 678678, 678, 7, 1, 8678.00, '跟团游鸡肤鹤发', 0, 3003, '[3,3003]');
+INSERT INTO `journal_details` VALUES (78, '研讨会发给回复', '5c3d4b76_ea6f.jpg', '规范化就发个号', 3, '2019-04-18 17:09:17', '2019-04-02', 678, '678', 678, '678', '678', '678', 678, '678', '678', 0, 23, 1, '678', '678', 678, 678, 0, 1, 678.00, '库遇见过', 0, 4003, '[4,4003]');
+INSERT INTO `journal_details` VALUES (79, '风格和风格', '5c3d4b76_ea6f.jpg', '任天野', 2, '2019-04-18 17:13:41', '2019-04-10', 789, '53', 35, '35', '35', '3535', 35, '35', '35', 0, 4, 1, '35', '35', 35, 35, 2, 1, 35.00, '风格和风格和', 0, 1002, '[1,1002]');
+INSERT INTO `journal_details` VALUES (80, '电饭锅电饭锅', '5c3d4b76_ea6f.jpg', '567与', 1, '2019-04-18 17:15:39', '2019-04-17', 8, '8', NULL, '', '', '', NULL, '', '', 0, 24, 1, '', '', NULL, NULL, 9, 1, NULL, '高合金钢', 0, 3, '[3]');
+INSERT INTO `journal_details` VALUES (81, '鼎折覆餗', '5c3d4b76_ea6f.jpg', '规划局', 2, '2019-04-18 17:17:31', '2019-04-03', 7, '', NULL, '', '', '', NULL, '', '', 0, 5, 1, '', '', NULL, NULL, 1, 1, NULL, '', 0, 5002, '[5,5002]');
+INSERT INTO `journal_details` VALUES (82, '环节', '5c3d4b76_ea6f.jpg', '环节', 2, '2019-04-18 17:31:06', '2019-04-11', 6, '6', 6, '6', '6', '6', 6, '', '6', 1, 7, 1, '6', '6', 6, 6, 2, 1, 6.00, '', 0, 3003, '[3,3003]');
+INSERT INTO `journal_details` VALUES (86, '333333', '5c3d4b76_ea6f.jpg', '1', 2, '2019-04-19 14:25:31', '2019-04-17', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 4, '内蒙古出版社', '1', 0, 3, 1, 'm111', '1-111', 4, 1, 9, 0, 1.00, '678铁观音金太阳', 0, 3002, '[3,3002]');
+INSERT INTO `journal_details` VALUES (87, '特', '5c3d4b76_ea6f.jpg', '阿萨德', 2, '2019-04-20 15:42:39', '2019-04-18', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 3, '1', '1', 0, 2, 1, 'm1234', '1-111', 4, 1, 4, 1, 1.00, 'asdasd', 0, 1002, '[1,1002]');
+INSERT INTO `journal_details` VALUES (88, '1', '5c3d4b76_ea6f.jpg', '1', 1, '2019-04-20 15:46:34', '2019-04-10', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 2, '1', '1', 0, 2, 1, 'M111', '1-111', 4, 1, 2, 1, 1.00, 'ADSASD', 1, 3003, '[3,3003]');
+INSERT INTO `journal_details` VALUES (89, '11111', '5c3d4b76_ea6f.jpg', '1111', 1, '2019-04-20 15:52:24', '2019-04-10', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 4, '1', '1', 0, 1, 1, 'm1234', '1-111', 4, 1, 3, 1, 1.00, 'asdadads', 0, 3003, '[3,3003]');
+INSERT INTO `journal_details` VALUES (93, '123123123', '5c3d4b76_ea6f.jpg', '1111', 1, '2019-04-20 16:18:28', '2019-04-18', 1, '2019-1', 1, 'cn11-1111/A', '9780596520687', '1111-1111', 3, '1', '1', 0, 5, 1, 'm123', '1-111', 4, 1, 4, 1, 1.00, 'sdfsadf', 0, 3, '[3]');
+INSERT INTO `journal_details` VALUES (94, '1', '5c3d4b76_ea6f.jpg', '1', 1, '2019-04-20 17:04:58', '2019-04-18', 1, '2019-2', 1, 'cn11-1111/A', '9780596520687', '1111-2222', 5, '1', '1', 0, 6, 1, 'm122', '1-222', 4, 1, 5, 1, 1.00, '<p><strong>sdasdfasdsdfsdfsdfsdfsdfsdfsdfsdfsdfd</strong><span style=\"text-decoration: underline; color: #ff6600;\"><em>撒旦法撒大声地</em></span></p>', 0, 4, '[4]');
+INSERT INTO `journal_details` VALUES (95, '撒旦法', '5c3d4b76_ea6f.jpg', '阿达', 2, '2019-04-28 14:47:38', '2019-04-25', 12, '2019-2', 12, 'cn11-1111/A', '9780596520687', '1111-2222', 7, '1', '1', 0, 4, 1, 'm123', '1-211', 4, 12, 6, 1, 1.00, '<p>sdfsdfwerfwqerqw&nbsp;</p>', 0, 3003, '[3,3003]');
+INSERT INTO `journal_details` VALUES (96, '撒地方斯蒂芬', '5c3d4b76_ea6f.jpg', 'asdasd', 2, '2019-04-28 17:28:18', '2019-04-18', 12, '2018-3', 12, 'cn11-1111/A', '9780596520687', '2345-3456', 7, 'wsd', 'sdf', 0, 5, 1, 'm123', '1-555', 4, 12, 0, 1, 2.00, '<p>45tgedrfgsdfsc</p>', 0, 3002, '[3,3002]');
 
 -- ----------------------------
 -- Table structure for journal_images
@@ -324,7 +335,7 @@ CREATE TABLE `slide_show`  (
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `show_flag` tinyint(1) NULL DEFAULT NULL,
   PRIMARY KEY (`slide_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of slide_show
@@ -336,6 +347,7 @@ INSERT INTO `slide_show` VALUES (15, '1556445515303-slide.png', 'E:/img/15564455
 INSERT INTO `slide_show` VALUES (16, '1556454943642-slide.jpg', 'E:/img/1556454943642-slide.jpg', NULL);
 INSERT INTO `slide_show` VALUES (17, '1556502449407-slide.jpg', 'E:/img/1556502449407-slide.jpg', NULL);
 INSERT INTO `slide_show` VALUES (18, '1556503067659-slide.jpg', 'E:/img/1556503067659-slide.jpg', NULL);
+INSERT INTO `slide_show` VALUES (19, '1557021190189-slide.jpg', 'F:/MyWorkSpace/bishe-vue/journal-door/static/slide-img/1557021190189-slide.jpg', NULL);
 
 -- ----------------------------
 -- Table structure for user
@@ -359,7 +371,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', '$2a$10$c33lBhfeXZCWq3F4tMX6uepbkdwm4mk7JgSX9gLh5qgr9Ln1b7NI6', '15555555555', '12345678@qq.com', 1, 'e1cf12c07bf6458992569e67927d767e.png', '2019-04-29 17:52:56', 1);
+INSERT INTO `user` VALUES (1, 'admin', '$2a$10$c33lBhfeXZCWq3F4tMX6uepbkdwm4mk7JgSX9gLh5qgr9Ln1b7NI6', '15555555555', '12345678@qq.com', 1, 'e1cf12c07bf6458992569e67927d767e.png', '2019-05-05 09:27:54', 0);
 INSERT INTO `user` VALUES (15, 'test', '$2a$10$o1vHv7JPeXH9pd/5CtOMs.sDt79R16goNJ.hvVMmv5vfp06f6ouEO', '15288888888', '12345678@qq.com', 1, '1556439305760-user-avatar.jpg', '2019-04-29 10:42:12', 0);
 INSERT INTO `user` VALUES (65, '三生三世', '$2a$10$BlL22pBvwf5HdjCK39tE3u540OmBW24esjQM88DrVGgVY96Qx8IP.', '15288888888', '123456@qq.com', 1, '1555574451610-journal-addition.jpg', NULL, 0);
 INSERT INTO `user` VALUES (66, 'asdadad', '$2a$10$MOVWgazvhjMPFdr5NWl/7uIJ6NWiKpCggspwuQRdjex6VX/PVOfpi', '15566666666', '123445@qq.com', 1, '1555574451361-journal-addition.jpg', NULL, 1);
