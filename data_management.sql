@@ -11,7 +11,7 @@
  Target Server Version : 50720
  File Encoding         : 65001
 
- Date: 05/05/2019 19:04:25
+ Date: 08/05/2019 16:53:11
 */
 
 SET NAMES utf8mb4;
@@ -41,7 +41,7 @@ CREATE TABLE `borrow`  (
   INDEX `borrow_id_2`(`borrow_id`, `user_id`, `journal_id`) USING BTREE,
   CONSTRAINT `borrow_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `borrow_ibfk_2` FOREIGN KEY (`journal_id`) REFERENCES `journal_details` (`journal_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of borrow
@@ -61,6 +61,7 @@ INSERT INTO `borrow` VALUES (14, '2019-05-04', '2019-07-04', NULL, NULL, 0, 0, 0
 INSERT INTO `borrow` VALUES (15, '2019-04-16', '2019-05-01', '2019-05-04', NULL, 1, 0, 20.00, 1, 0, 15, 76);
 INSERT INTO `borrow` VALUES (16, '2019-05-04', '2019-07-04', NULL, NULL, 0, 0, 0.00, 0, 0, 1, 10);
 INSERT INTO `borrow` VALUES (17, '2019-05-05', '2019-07-05', NULL, NULL, 0, 0, 0.00, 0, 0, 68, 1);
+INSERT INTO `borrow` VALUES (18, '2019-05-07', '2019-07-07', NULL, NULL, 0, 0, 0.00, 0, 0, 1, 94);
 
 -- ----------------------------
 -- Table structure for fair_information
@@ -133,12 +134,14 @@ CREATE TABLE `fair_user`  (
   `fair_information_id` int(11) NULL DEFAULT NULL COMMENT '书展外键',
   `user_id` int(11) NULL DEFAULT NULL COMMENT '参加用户外键',
   PRIMARY KEY (`fair_user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of fair_user
 -- ----------------------------
 INSERT INTO `fair_user` VALUES (1, 17, 1);
+INSERT INTO `fair_user` VALUES (2, 16, 1);
+INSERT INTO `fair_user` VALUES (3, 12, 1);
 
 -- ----------------------------
 -- Table structure for journal_details
@@ -198,7 +201,7 @@ INSERT INTO `journal_details` VALUES (87, '特', '5c3d4b76_ea6f.jpg', '阿萨德
 INSERT INTO `journal_details` VALUES (88, '1', '5c3d4b76_ea6f.jpg', '1', 1, '2019-04-20 15:46:34', '2019-04-10', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 2, '1', '1', 0, 2, 1, 'M111', '1-111', 4, 1, 2, 1, 1.00, 'ADSASD', 1, 3003, '[3,3003]');
 INSERT INTO `journal_details` VALUES (89, '11111', '5c3d4b76_ea6f.jpg', '1111', 1, '2019-04-20 15:52:24', '2019-04-10', 1, '2019-1', 1, 'CN11-1111/A', '9780596520687', '1111-1111', 4, '1', '1', 0, 1, 1, 'm1234', '1-111', 4, 1, 3, 1, 1.00, 'asdadads', 0, 3003, '[3,3003]');
 INSERT INTO `journal_details` VALUES (93, '123123123', '5c3d4b76_ea6f.jpg', '1111', 1, '2019-04-20 16:18:28', '2019-04-18', 1, '2019-1', 1, 'cn11-1111/A', '9780596520687', '1111-1111', 3, '1', '1', 0, 5, 1, 'm123', '1-111', 4, 1, 4, 1, 1.00, 'sdfsadf', 0, 3, '[3]');
-INSERT INTO `journal_details` VALUES (94, '1', '5c3d4b76_ea6f.jpg', '1', 1, '2019-04-20 17:04:58', '2019-04-18', 1, '2019-2', 1, 'cn11-1111/A', '9780596520687', '1111-2222', 5, '1', '1', 0, 6, 1, 'm122', '1-222', 4, 1, 5, 1, 1.00, '<p><strong>sdasdfasdsdfsdfsdfsdfsdfsdfsdfsdfsdfd</strong><span style=\"text-decoration: underline; color: #ff6600;\"><em>撒旦法撒大声地</em></span></p>', 0, 4, '[4]');
+INSERT INTO `journal_details` VALUES (94, '1', '5c3d4b76_ea6f.jpg', '1', 1, '2019-04-20 17:04:58', '2019-04-18', 1, '2019-2', 1, 'cn11-1111/A', '9780596520687', '1111-2222', 5, '1', '1', 0, 6, 1, 'm122', '1-222', 4, 1, 4, 1, 1.00, '<p><strong>sdasdfasdsdfsdfsdfsdfsdfsdfsdfsdfsdfd</strong><span style=\"text-decoration: underline; color: #ff6600;\"><em>撒旦法撒大声地</em></span></p>', 0, 4, '[4]');
 INSERT INTO `journal_details` VALUES (95, '撒旦法', '5c3d4b76_ea6f.jpg', '阿达', 2, '2019-04-28 14:47:38', '2019-04-25', 12, '2019-2', 12, 'cn11-1111/A', '9780596520687', '1111-2222', 7, '1', '1', 0, 4, 1, 'm123', '1-211', 4, 12, 6, 1, 1.00, '<p>sdfsdfwerfwqerqw&nbsp;</p>', 0, 3003, '[3,3003]');
 INSERT INTO `journal_details` VALUES (96, '撒地方斯蒂芬', '5c3d4b76_ea6f.jpg', 'asdasd', 2, '2019-04-28 17:28:18', '2019-04-18', 12, '2018-3', 12, 'cn11-1111/A', '9780596520687', '2345-3456', 7, 'wsd', 'sdf', 0, 5, 1, 'm123', '1-555', 4, 12, 0, 1, 2.00, '<p>45tgedrfgsdfsc</p>', 0, 3002, '[3,3002]');
 
@@ -301,13 +304,14 @@ CREATE TABLE `role`  (
   `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名',
   `role_descride` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色描述',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
 INSERT INTO `role` VALUES (1, 'admin', NULL);
 INSERT INTO `role` VALUES (2, 'editor', NULL);
+INSERT INTO `role` VALUES (3, 'commoner', NULL);
 
 -- ----------------------------
 -- Table structure for role_permission
@@ -366,12 +370,12 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`user_id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `user_id_2`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 78 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', '$2a$10$c33lBhfeXZCWq3F4tMX6uepbkdwm4mk7JgSX9gLh5qgr9Ln1b7NI6', '15555555555', '12345678@qq.com', 1, 'e1cf12c07bf6458992569e67927d767e.png', '2019-05-05 09:27:54', 0);
+INSERT INTO `user` VALUES (1, 'admin', '$2a$10$c33lBhfeXZCWq3F4tMX6uepbkdwm4mk7JgSX9gLh5qgr9Ln1b7NI6', '15555555555', '12345678@qq.com', 1, 'e1cf12c07bf6458992569e67927d767e.png', '2019-05-07 15:31:30', 0);
 INSERT INTO `user` VALUES (15, 'test', '$2a$10$o1vHv7JPeXH9pd/5CtOMs.sDt79R16goNJ.hvVMmv5vfp06f6ouEO', '15288888888', '12345678@qq.com', 1, '1556439305760-user-avatar.jpg', '2019-04-29 10:42:12', 0);
 INSERT INTO `user` VALUES (65, '三生三世', '$2a$10$BlL22pBvwf5HdjCK39tE3u540OmBW24esjQM88DrVGgVY96Qx8IP.', '15288888888', '123456@qq.com', 1, '1555574451610-journal-addition.jpg', NULL, 0);
 INSERT INTO `user` VALUES (66, 'asdadad', '$2a$10$MOVWgazvhjMPFdr5NWl/7uIJ6NWiKpCggspwuQRdjex6VX/PVOfpi', '15566666666', '123445@qq.com', 1, '1555574451361-journal-addition.jpg', NULL, 1);
@@ -379,6 +383,7 @@ INSERT INTO `user` VALUES (68, 'sdafasd', '$2a$10$Wb79ds7FaeJfskycZTiu/.Tvzumaoa
 INSERT INTO `user` VALUES (73, '新的风格胜多负少', '$2a$10$00D5CoTY4vVNI9zePg6.Be48Sy4Ej.tR/yA5eJrb1/aOwCNgDxe.u', '15888888888', 'asdefasdajnk@163.com', 1, '1556523826935-user-avatar.jpg', NULL, 0);
 INSERT INTO `user` VALUES (74, 'sdfsdfsdf', '$2a$10$saiYTdL3rbTnxuDQFib5eO5q.UQRdtVq0OF/TXr0WNo6PRbP/vCne', '15555555555', 'sdfsdfdfs@qq.com', 0, '1556523987276-user-avatar.jpg', NULL, 0);
 INSERT INTO `user` VALUES (75, 'asdasd', '$2a$10$q6pW6/N3Ld1sRbS7nBthkeNEzXp.ATx..769WzooncNe1HJlFgZPG', '15888888888', 'adasdhjkasd@qq.com', 1, NULL, NULL, 0);
+INSERT INTO `user` VALUES (77, 'testtest', '$2a$10$BncFEj6ggoryHMxS2R4/zOklB.rXZyxqIFFbpzK.Dzw.YhPLrOfa.', '13322224444', 'asdasd@qq.com', 1, '1557211562546-user-avatar.jpg', '2019-05-08 12:13:58', 0);
 
 -- ----------------------------
 -- Table structure for user_role
@@ -393,9 +398,9 @@ CREATE TABLE `user_role`  (
   INDEX `user_role_id`(`user_role_id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `user_id_2`(`user_id`, `role_id`) USING BTREE,
-  CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_role
@@ -414,5 +419,6 @@ INSERT INTO `user_role` VALUES (24, 74, 1);
 INSERT INTO `user_role` VALUES (25, 74, 2);
 INSERT INTO `user_role` VALUES (26, 75, 1);
 INSERT INTO `user_role` VALUES (27, 75, 2);
+INSERT INTO `user_role` VALUES (29, 77, 3);
 
 SET FOREIGN_KEY_CHECKS = 1;
